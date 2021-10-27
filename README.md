@@ -26,10 +26,10 @@ Bot ID: [@343bjvaa](https://page.line.me/343bjvaa)
 Env properties:
 
 - `DATABASE_URL`: Database (PostgreSQL by default, update config/database.php to use different database) url connection
-- `CHANNEL_ACCESS_TOKEN`: From [LINE Developers](https://developers.line.biz/console)
-- `CHANNEL_SECRET`: From [LINE Developers](https://developers.line.biz/console)
+- `CHANNEL_ACCESS_TOKEN`: From [LINE Developers Console](https://developers.line.biz/console)
+- `CHANNEL_SECRET`: From [LINE Developers Console](https://developers.line.biz/console)
 
-And set Webhook URL at [LINE Developers](https://developers.line.biz/console) with your webhook endpoint.
+And set Webhook URL at [LINE Developers Console](https://developers.line.biz/console) with your webhook endpoint.
 Example: `https://www.example.com/public/webhook`
 
 ### Built With
