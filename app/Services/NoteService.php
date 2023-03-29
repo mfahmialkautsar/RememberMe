@@ -3,6 +3,7 @@
 namespace Services;
 
 use App\Repositories\NoteRepository;
+use Illuminate\Support\Facades\Log;
 
 class NoteService
 {
@@ -22,14 +23,16 @@ class NoteService
         $notes = $this->noteRepository->getAll($source);
         $list = array();
         for ($i = 0; $i < count($notes); $i++) {
-            array_push($list, $i + 1 . ". {$notes[$i]['content']}");
+            $checked = $notes[$i]['is_checked'];
+            $checkedString = $checked ? "✅ " : "";
+            array_push($list, $i + 1 . ". " . $checkedString . "{$notes[$i]['content']}");
         }
         return (array) $list;
     }
 
     public function deleteByOrderNumbers($numbers, string $source)
     {
-        $deletes = array();
+        $list = array();
         $temp = 0;
         $smallest = $numbers[0];
         foreach ($numbers as $value) {
@@ -40,11 +43,20 @@ class NoteService
                 $smallest = $value;
             }
             $temp++;
-            array_push($deletes, $final);
+            array_push($list, $final);
         }
 
-        for ($i = 0; $i < count($deletes); $i++) {
-            $this->noteRepository->delete($deletes[$i], $source);
+        Log::debug("list: ", $numbers);
+
+        for ($i = 0; $i < count($list); $i++) {
+            $this->noteRepository->delete($list[$i], $source);
+        }
+    }
+
+    public function check($numbers, string $source)
+    {
+        foreach ($numbers as $value) {
+            $this->noteRepository->check($value, $source);
         }
     }
 }

@@ -236,6 +236,55 @@ class WebhookService
                         $message = "What note do you wanna delete?\nType \".del [note number]\"";
                     }
                     break;
+                case '.check':
+                case '.c':
+                    if ($strArgs) {
+                        $checkCount = count($args);
+                        $newArgs = array();
+                        $isPassed = false;
+
+                        // check input
+                        for ($i = 0; $i < $checkCount; $i++) {
+                            $number = $args[$i];
+
+                            // make sure the input is integer only
+                            if (!is_numeric($number)) {
+                                $isPassed = false;
+                                break;
+                            }
+
+                            $number = (int) $number;
+
+                            if ($number > $this->noteRepository->count($sourceId) || $number <= 0) {
+                                $isPassed = false;
+                                $message = "Oops, there's no note number {$number}";
+                                break;
+                            }
+
+                            // check if there's same input
+                            if (in_array($number, $newArgs)) {
+                                $message = "Oops, you can't check the same numbers";
+                                $isPassed = false;
+                                break;
+                            }
+
+                            array_push($newArgs, $number);
+                            $isPassed = true;
+                        }
+
+                        // check note
+                        if ($isPassed) {
+
+                            // check item based on array
+                            $this->noteService->check($args, $sourceId);
+
+                            // set reply
+                            $message = "Success {$this->utilityService->getEmoji('100033')}";
+                        }
+                    } else {
+                        $message = "What note do you wanna check?\nType \".check [note number]\"";
+                    }
+                    break;
                 case '.show':
                 case '.s':
                     $notes = $this->noteService->getNotes($sourceId);
